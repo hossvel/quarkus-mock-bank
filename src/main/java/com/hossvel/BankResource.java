@@ -15,17 +15,15 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 public class BankResource {
 
     @Inject
-    @RestClient
-    FraudClient fraudClient;
+    BankService bankService;
 
     @POST
     @Path("/transfer")
     public Response transfer(TransferRequest request) {
-        boolean isFraud = fraudClient.checkFraud(request);
-        if (isFraud) {
-            return Response.status(403).entity("Transfer flagged as fraudulent").build();
+        TransferResponse transferResponse = bankService.transfer(request);
+        if (transferResponse.isFraud) {
+            return Response.status(403).entity(transferResponse).build();
         }
-        // lógica de transferencia aquí
-        return Response.ok("Transfer successful").build();
+        return Response.ok(transferResponse).build();
     }
 }
