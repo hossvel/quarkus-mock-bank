@@ -26,4 +26,8 @@ public class BankService {
 
 
     }
+
+    public boolean meetsMinimumAmount(double amount) {
+        return amount >= 5000;
+    }
 }
